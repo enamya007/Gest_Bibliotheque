@@ -1,0 +1,53 @@
+{% extends 'bibliotheque/base.html' %}
+{% block content %}
+<style>
+  .hero {
+    text-align: center;
+    padding: 4rem 1rem;
+    animation: fadeIn 0.8s ease;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .hero h1 { font-size: 3rem; margin-bottom: 1rem; }
+  .hero p { color: #aaa; font-size: 1.2rem; margin-bottom: 2rem; }
+  .lang-cards {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 3rem;
+  }
+  .lang-card {
+    background: #161616;
+    border: 1px solid #333;
+    border-radius: 16px;
+    padding: 2rem 3rem;
+    text-align: center;
+    text-decoration: none;
+    color: white;
+    transition: all 0.3s ease;
+    font-size: 1.1rem;
+  }
+  .lang-card:hover {
+    border-color: #ff6600;
+    box-shadow: 0 0 30px #ff660050;
+    transform: scale(1.05);
+  }
+  .lang-card .flag { font-size: 3rem; display: block; margin-bottom: 1rem; }
+</style>
+<div class="hero">
+  <h1>Bienvenue sur BiblioTech 📚</h1>
+  <p>Explorez notre collection de livres africains et internationaux</p>
+  <a href="{% url 'liste_livres' %}" class="btn">Voir tous les livres</a>
+  <div class="lang-cards">
+    <a href="{% url 'liste_livres' %}?langue=fr" class="lang-card">
+      <span class="flag">🇫🇷</span>Livres en Français
+    </a>
+    <a href="{% url 'liste_livres' %}?langue=en" class="lang-card">
+      <span class="flag">🇬🇧</span>Books in English
+    </a>
+  </div>
+</div>
+{% endblock %}

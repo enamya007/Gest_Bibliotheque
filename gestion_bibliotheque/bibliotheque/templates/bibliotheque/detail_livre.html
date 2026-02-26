@@ -1,0 +1,120 @@
+{% extends 'bibliotheque/base.html' %}
+{% block content %}
+<style>
+  .detail-wrap {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 2rem;
+    animation: fadeIn 0.5s ease;
+  }
+  @keyframes fadeIn {
+    from { opacity:0; transform:translateX(-20px); }
+    to { opacity:1; transform:translateX(0); }
+  }
+  .covers { display: flex; flex-direction: column; gap: 1rem; }
+  .covers img {
+    width: 100%;
+    border-radius: 12px;
+    border: 1px solid #333;
+    transition: all 0.3s;
+  }
+  .covers img:hover { border-color: #ff6600; box-shadow: 0 0 20px #ff660050; }
+  .cover-label { color: #888; font-size: 0.8rem; text-align: center; margin-top: 0.3rem; }
+  .detail-info h1 { font-size: 2rem; margin-bottom: 1rem; }
+  .meta-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .meta-item { background: #1a1a1a; border-radius: 8px; padding: 0.8rem 1rem; border-left: 3px solid #ff6600; }
+  .meta-label { color: #888; font-size: 0.8rem; text-transform: uppercase; }
+  .meta-value { color: #fff; font-weight: bold; margin-top: 0.2rem; }
+  .resume-box {
+    background: #161616;
+    border: 1px solid #333;
+    border-radius: 12px;
+    padding: 1.5rem;
+    line-height: 1.8;
+    color: #ddd;
+  }
+  @media (max-width: 700px) {
+    .detail-wrap { grid-template-columns: 1fr; }
+  }
+</style>
+
+<a href="{% url 'liste_livres' %}" class="btn" style="margin-bottom:2rem; display:inline-block">← Retour</a>
+
+<div class="detail-wrap">
+  <div class="covers">
+    {% if livre.couverture_avant %}
+      <div>
+        <img src="{{ livre.couverture_avant.url }}" alt="Couverture avant">
+        <div class="cover-label">Couverture avant</div>
+      </div>
+    {% endif %}
+    {% if livre.couverture_arriere %}
+      <div>
+        <img src="{{ livre.couverture_arriere.url }}" alt="Couverture arrière">
+        <div class="cover-label">Couverture arrière</div>
+      </div>
+    {% endif %}
+    {% if livre.premiere_page %}
+      <div>
+        <img src="{{ livre.premiere_page.url }}" alt="Première page">
+        <div class="cover-label">Première page</div>
+      </div>
+    {% endif %}
+    {% if not livre.couverture_avant and not livre.couverture_arriere %}
+      <div style="font-size:8rem; text-align:center; padding:2rem">📖</div>
+    {% endif %}
+  </div>
+
+  <div class="detail-info">
+    <h1>{{ livre.titre }}</h1>
+    <div>
+      {% for cat in livre.get_categories_list %}
+        <span class="badge">{{ cat }}</span>
+      {% endfor %}
+    </div>
+
+    <div class="meta-grid" style="margin-top:1.5rem">
+      <div class="meta-item">
+        <div class="meta-label">Auteur</div>
+        <div class="meta-value">{{ livre.auteur }}</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Nationalité</div>
+        <div class="meta-value">{{ livre.auteur.nationalite|default:"—" }}</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Année d'édition</div>
+        <div class="meta-value">{{ livre.annee_edition|default:"—" }}</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Maison d'édition</div>
+        <div class="meta-value">{{ livre.maison_edition|default:"—" }}</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">ISBN</div>
+        <div class="meta-value">{{ livre.isbn|default:"—" }}</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Langue</div>
+        <div class="meta-value">{{ livre.get_langue_display }}</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Disponibilité</div>
+        <div class="meta-value {% if livre.disponible %}disponible{% else %}indisponible{% endif %}">
+          {% if livre.disponible %}✅ Disponible{% else %}❌ Indisponible{% endif %}
+        </div>
+      </div>
+    </div>
+
+    {% if livre.resume %}
+    <h2>Résumé</h2>
+    <div class="resume-box">{{ livre.resume }}</div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

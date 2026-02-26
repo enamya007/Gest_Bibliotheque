@@ -1,0 +1,50 @@
+{% extends 'bibliotheque/base.html' %}
+{% block content %}
+<style>
+  .login-wrap {
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .login-box {
+    background: #161616;
+    border: 1px solid #ff6600;
+    border-radius: 16px;
+    padding: 3rem;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 0 40px #ff660030;
+    animation: fadeIn 0.6s ease;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .login-box h1 { text-align: center; margin-bottom: 2rem; }
+  .form-group { margin-bottom: 1.5rem; }
+  .form-group label { display: block; margin-bottom: 0.4rem; color: #aaa; }
+  .form-group input { width: 100%; padding: 0.8rem 1rem; font-size: 1rem; }
+  .login-box .btn { width: 100%; padding: 0.9rem; font-size: 1rem; margin-top: 1rem; }
+  .error { background: #2a0000; border: 1px solid #f44336; color: #f44336; 
+           padding: 0.7rem; border-radius: 8px; margin-bottom: 1rem; text-align: center; }
+</style>
+<div class="login-wrap">
+  <div class="login-box">
+    <h1>📚 BiblioTech</h1>
+    {% if error %}<div class="error">⚠️ {{ error }}</div>{% endif %}
+    <form method="POST">
+      {% csrf_token %}
+      <div class="form-group">
+        <label>Nom d'utilisateur</label>
+        <input type="text" name="username" required autofocus>
+      </div>
+      <div class="form-group">
+        <label>Mot de passe</label>
+        <input type="password" name="password" required>
+      </div>
+      <button type="submit" class="btn">Se connecter</button>
+    </form>
+  </div>
+</div>
+{% endblock %}
