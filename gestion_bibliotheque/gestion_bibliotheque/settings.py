@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 
 from pathlib import Path
 import os
+import dj_database_url
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,12 +21,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-3-7v*^9f&#m3akd7og*1pfwr*m3t^t+lme2^m_*t=l(&r#6^3h'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-3-7v*^9f&#m3akd7og*1pfwr*m3t^t+lme2^m_*t=l(&r#6^3h')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# Autorise l'adresse locale et l'adresse que Render va te donner
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.onrender.com']
 
 
 # Application definition
@@ -74,11 +76,12 @@ WSGI_APPLICATION = 'gestion_bibliotheque.wsgi.application'
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    'default': dj_database_url.config(
+        default='sqlite:///db.sqlite3', # Utilise SQLite par défaut sur ton PC
+        conn_max_age=600)
     }
-}
+
+
 
 
 # Password validation
